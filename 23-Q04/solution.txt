@@ -1,0 +1,4 @@
+Inputen är en lista med kort. Korten består av två listor nummer, separerade med ett pipe. Första listan är på vinnande nummer, andra på våra nummer. Varje nummer vi har som finns i listan med vinnande nummer dubblar våra poäng. Första numret ger oss 1 poäng. Svaret är summan av alla vinster.
+
+Svar = \Sum_kort max(0, 2^(antalet vinnande nummer på kortet - 1))
+

@@ -1,0 +1,25 @@
+.text marks the following code as being in the default section
+
+.globl _main "exports" the _main label so other unit files? can see it
+
+
+# Solution
+
+Kommer få en newline-separerad lista strängar. Texten är menad att läsas som ett 2D plan där tal och symboler har placerats ut sparsely. `.` är en tom character. Vi måste plocka ut varje tal som "nuddar" en symbol. "Nudda" är när ett tal ligger intill symbolen cardinally eller diagonally. Målet är att summera ihop alla tal som nuddar minst en  symbol.
+
+Svårt att representera 2D char arrayen i assembly, kan vi lösa problemet i en one-shot pass?
+	Ett tal kan nudda en symbol i x-led eller y-led. X-led är enkelt att sköta, om en symbol preceedar eller succeedar talet så inkluderas det.
+
+	Y-led är problemet. Om en symbol ligger på raden över eller under och inom +1 i x-ledsavstånd till talet så inkluderas det.
+
+Behöver bara ha 3 rader av information för att bedöma ett tal. Kan ha en 3 raders buffer med nån reasonable line length för att hantera talen.
+
+Splosh metod?
+	Jobbigt att kolla diagonalt runt tal. Men what if... istället för att gå från talen och söka utåt så skriver vi om inputen och sploshar ut symbolerna till områdena de faktiskt påverkar?
+
+Symbol search metod
+	Spara texten till en buffer. Iterera bokstäverna tills du hittar en symbol. Sen söker du därifrån om det finns ett tal i omgivningen. Om en siffra hittas så måste vi extrahera hela talet ur den siffran. (Söka framåt och bakåt för att hitta alla siffror i talet)
+
+	Problem: Ett tal kan neighboura en symbol på flera positioner. Hur undviker vi att ett tal räknas flera gånger?
+		Funktionen som parsar tal måste säga hur långt talet utsträcker sig så söken vet vart den inte ska räkna
+	
