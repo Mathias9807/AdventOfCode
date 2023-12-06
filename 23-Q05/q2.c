@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define MAX_N 1000
+#define MAX_N 100
 
 typedef struct {
 	unsigned int start;
