@@ -1,0 +1,29 @@
+y = x * (t - x)
+y = tx - x²
+
+9 = tx - x²
+x² - tx + 3² = 0
+x = t/2 ± sqrt(t²/2² - 3²)
+x₀ = t/2 - sqrt(49/4 - 9)
+x₀ = 3.5 - 1.802776 = 1.7
+x₁ = 3.5 + 1.802776 = 5.3
+
+Max punkten är när derivatan når 0
+y = tx - x²
+y' = t - 2x
+0 = t - 2x
+2x = t
+x = t/2
+
+Beräkna antal sätt man kan vinna på
+Antalet heltal mellan de två rötterna av d = tx - x², omskrivet t/2 ± sqrt(t²/4 - d)
+
+Om rotens uttryck blir negativt innebär det att det inte finns någon lösning och 0 ska då returneras.
+Om rotens uttryck blir 0 får vi endast ett svar om t/2 är ett jämt tal.
+
+nLösningar = {
+	IF t²/4 < d: 0
+	IF t²/4 = d och t/2 inte är jämt: 0
+	Annars: 1 + floor(t/2 + sqrt(t²/4 - d)) - ceil(t/2 - sqrt(t²/4 - d))
+}
+
