@@ -1,0 +1,2 @@
+Input is a 2D map of hashtags. The answer is the sum of the taxicab distances between every pair of hashtags. Rows and columns that DON'T contain hashtags are actually twice as expansive as depicted on the map.
+

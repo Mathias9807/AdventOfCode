@@ -1,0 +1,8 @@
+Svaret är antalet steg det tar att komma så långt bort från startpunkten som möjligt. Eftersom rören går i en loop så är det lika med floor(n tiles / 2)
+
+Lösning:
+	Skanna in kartan i nån struktur
+	Hitta S
+	Vandra i nån riktning och räkna varje steg
+	Sluta när man når S åter
+	Svaret är floor(antal steg / 2)
