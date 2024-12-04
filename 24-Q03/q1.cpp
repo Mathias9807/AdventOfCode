@@ -15,7 +15,7 @@ int main() {
 	fseek(inputFile, 0, SEEK_SET);
 
 	char* input = (char*) calloc(inputSize + 1, 1);
-	fread(input, inputSize, inputSize, inputFile);
+	fread(input, inputSize, 1, inputFile);
 
 	printf("Input: %s\n", input);
 
