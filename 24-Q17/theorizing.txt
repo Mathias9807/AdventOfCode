@@ -1,0 +1,57 @@
+Register A: 64751474
+Register B: 0
+Register C: 0
+
+Program: 2,4,1,2,7,5,4,5,1,3,5,5,0,3,3,0
+
+bst 4
+bxl 2
+cdv 5
+bxc 5
+bxl 3
+out 5
+adv 3
+jnz 0
+
+bst A % 8 -> B		000
+bxl B XOR 2 -> B	010
+cdv A / 2^B -> C	10000
+bxc B XOR C -> B	101
+bxl B XOR 3 -> B	110
+out print(B % 8)
+adv A / 2^3 -> A
+jnz if A != 0 -> jump to start
+
+bxl (A % 8) XOR 2 -> B	// last 3 bits of A but flip A₁, write to B
+	B(…,0,A₂,~A₁,A₀)
+cdv A / 2^B -> C
+bxc B XOR C -> B	// B₂=C₂, B₁=C₁, B₀≠C₀
+bxl B XOR 3 -> B	// ...nnnn001, XOR gör den till 2
+out print(B % 8)	// Första iterationen ska B = 2
+			// B%8 ska vara = 2
+			// ...nnnn010
+adv A / 2^3 -> A
+jnz if A != 0 -> jump to start
+
+0 -> 000 -> 010 -> 2 steg
+1 -> 001 -> 011 -> 3 steg
+2 -> 010 -> 000 -> 0 steg
+3 -> 011 -> 001 -> 1 steg
+4 -> 100 -> 110 -> 6 steg
+5 -> 101 -> 111 -> 7 steg
+6 -> 110 -> 100 -> 4 steg
+7 -> 111 -> 101 -> 5 steg
+
+00010001 -> B=011 -> C=A/8=010
+
+110110001 -> B=011 -> C=110110 -> B=101 -> B=110
+
+B(A₂~A₁A₀) -> C(A₂,A₁,~A₀) -> B^C(lika, olik, olik) -> B(011) -> B=000
+000000 -> B(010) -> C(000) -> B^C(lika, olik, olik) -> B(011) -> B=000
+000001 -> B(011) -> C(000) -> B^C(lika, olik, olik) -> B(011) -> B=000
+
+Leftmost 3 group is 001, what does the next group have to be to get 3?
+001000 -> B(010) -> C(010) -> B^C(lik,lik,lik) -> B(000) -> B(011)
+
+001000 gives 3,0. next group should give 3 again
+001000011 -> B(001) -> C(001) -> B^C(lik,lik,lik) -> B(000) -> B(011)
