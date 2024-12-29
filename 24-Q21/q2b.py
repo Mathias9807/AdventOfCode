@@ -1,7 +1,8 @@
 #!/usr/bin/env python3.9
 
-from functools import cache
+from functools import lru_cache
 from itertools import permutations
+import sys
 
 keypPattern = [
     ['X', '^', 'A'],
@@ -15,7 +16,7 @@ dirs = {
     '>': ( 1, 0),
 }
 
-@cache
+@lru_cache(None)
 def getKeypPos(c):
     for y in range(len(keypPattern)):
         for x in range(len(keypPattern[0])):
@@ -23,12 +24,12 @@ def getKeypPos(c):
                 return x, y
     return -1, -1
 
-@cache
+@lru_cache(None)
 def keypadPresses(frm, to):
     fromPos = getKeypPos(frm)
     toPos = getKeypPos(to)
-    print('from: {}'.format(fromPos))
-    print('to: {}'.format(toPos))
+    # print('from: {}'.format(fromPos))
+    # print('to: {}'.format(toPos))
 
     moves = ['^' for _ in range(0, fromPos[1] - toPos[1])] \
         + ['v' for _ in range(0, toPos[1] - fromPos[1])] \
@@ -47,43 +48,50 @@ def keypadPresses(frm, to):
     moves = [''.join(move) for move in moves]
     return list(set(moves))
 
-nLevels = 3
+nLevels = 26
 
 # Which key presses are necessary to input the given code?
-# Funktionen rekurserar uppåt, 
+# Funktionen rekurserar uppåt,
+@lru_cache(None)
 def keyPresses(code, level=0):
-    print('keyPresses({}, {})'.format(code, level))
+    # print('keyPresses({}, {})'.format(code, level))
     # If we're on top level, we can type the code directly
     if level + 1 >= nLevels:
-        print('\tkeyPresses({}, {}) returned {}'.format(code, level, code))
-        return code
+        # print('\tkeyPresses({}, {}) returned {}'.format(code, level, code))
+        return len(code)
 
     pChr = 'A'
-    p = list(getKeypPos(pChr))
-    moves = []
+    # p = list(getKeypPos(pChr))
+    moves = 0
     for c in code:
-        print('keyPresses({}, {}) evaluating char {}'.format(code, level, c))
-        best = []
+        # print('keyPresses({}, {}) evaluating char {}'.format(code, level, c))
         bestLen = 1E100
         for opt in keypadPresses(pChr, c):
-            print('evaluating {}'.format(opt))
-            presses = ''.join(keyPresses(opt + 'A', level + 1))
-            if len(presses) < bestLen:
-                best = presses
-        print('best option: {}'.format(best))
-        moves.append(best)
+            # print('evaluating {}'.format(opt))
+            presses = keyPresses(opt + 'A', level + 1)
+            if presses < bestLen:
+                bestLen = presses
+        # print('keyPresses({}, {}) best option: {}'.format(code, level, best))
+        moves += bestLen
         pChr = c
-        p = getKeypPos(c)
-    print('\tkeyPresses({}, {}) returned {}'.format(code, level, moves))
+        # p = getKeypPos(c)
+    # print('\tkeyPresses({}, {}) returned {}'.format(code, level, moves))
     return moves
 
-# presses1 = ''.join(keyPresses('<A^A>^^AvvvA'))  # 029A
-# presses2 = ''.join(keyPresses('^^^A<AvvvA>A'))  # 980A
-# presses3 = ''.join(keyPresses('^<<A^^A>>AvvvA'))  # 179A
-# presses4 = ''.join(keyPresses('^^<<A>A>AvvA'))  # 456A
-presses5 = ''.join(keyPresses('^A^^<<A>>AvvvA'))  # 379A
-# print('Presses needed to input <^: {} of len {}'.format(presses1, len(presses1)))
-# print('Presses needed to input <^: {} of len {}'.format(presses2, len(presses2)))
-# print('Presses needed to input <^: {} of len {}'.format(presses3, len(presses3)))
-# print('Presses needed to input <^: {} of len {}'.format(presses4, len(presses4)))
-print('Presses needed: {} of len {}'.format(presses5, len(presses5)))
+# nums = [29, 980, 179, 456, 379]
+# codes = ['<A^A>^^AvvvA', '^^^A<AvvvA>A', '^<<A^^A>>AvvvA', '^^<<A>A>AvvA', '^A<<^^A>>AvvvA']
+nums = [319, 985, 340, 489, 964]
+codes = ['^A<<A^^>>AvvvA', '^^^A<AvAvv>A', '^A<<^A>vvA>A', '^^<<A^>A>AvvvA', '^^^AvA<<A>>vvA']
+presses1 = keyPresses(codes[0])
+presses2 = keyPresses(codes[1])
+presses3 = keyPresses(codes[2])
+presses4 = keyPresses(codes[3])
+presses5 = keyPresses(codes[4])
+print('Presses needed: {}'.format(presses1))
+print('Presses needed: {}'.format(presses2))
+print('Presses needed: {}'.format(presses3))
+print('Presses needed: {}'.format(presses4))
+print('Presses needed: {}'.format(presses5))
+
+presses = [presses1, presses2, presses3, presses4, presses5]
+print('Complexity: {}'.format(sum([presses[i] * nums[i] for i in range(len(nums))])))
