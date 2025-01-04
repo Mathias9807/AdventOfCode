@@ -1,0 +1,31 @@
+Sus lines
+z39     <- x39 AND y39
+	and39 gone, nånting använder en wire som borde ha resultatet av x39Ay39 men som istället har xor39^nåt
+
+z17     <- and17 OR ffg
+	z trådarna borde alla xor:as in
+
+z11     <- and11 XOR jdm
+	kind of ok
+
+z26     <- xor26 AND qgs
+	ser ut som den ska skriva till nästa carrybit, inte z26
+	
+	vi har: z26 <- xor26 AND qgs
+	och:    gvm <- xor26 XOR qgs
+
+	är dom flippade?
+
+swap qsb and z39?
+swap z26 and gvm?
+
+z17 blev aliased lmao
+	så z17 borde bytas med nåt
+absolutely swap z17 and wmp
+
+and11(qjj) och xor11(gjc) är swappade?
+
+Funkar!
+
+Trådarna som byttes är qsb, z39, z26, gvm, z17, wmp, qjj, gjc
+gjc,gvm,qjj,qsb,wmp,z17,z26,z39
