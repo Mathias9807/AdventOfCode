@@ -33,7 +33,7 @@ std::map<std::string, Wire> wires;
 std::vector<Gate> gates;
 
 int main() {
-	FILE* f = fopen("input.txt", "r");
+	FILE* f = fopen("input-corrected3.txt", "r");
 	std::regex line_re{"([a-zA-Z0-9]+): ([01])\n"};
 	while (!feof(f)) {
 		char *line = nullptr;
@@ -73,6 +73,7 @@ int main() {
 
 	while (true) {
 		// Iterate all gates and see which one can be updated
+next_iter:
 		bool none_updated = true;
 		for (Gate& g : gates) {
 			if (g.c.state != S_UNDEFINED) continue;
@@ -80,17 +81,17 @@ int main() {
 
 			switch (g.op) {
 			case AND:
-				printf("AND:ing %s and %s into %s\n", g.a.name.c_str(), g.b.name.c_str(), g.c.name.c_str());
+				printf("AND\t%s\t%s\t%s\n", g.a.name.c_str(), g.b.name.c_str(), g.c.name.c_str());
 				g.c.state = g.a.state & g.b.state;
-				break;
+				goto next_iter;
 			case OR:
-				printf("OR:ing %s and %s into %s\n", g.a.name.c_str(), g.b.name.c_str(), g.c.name.c_str());
+				printf("OR\t%s\t%s\t%s\n", g.a.name.c_str(), g.b.name.c_str(), g.c.name.c_str());
 				g.c.state = g.a.state | g.b.state;
-				break;
+				goto next_iter;
 			case XOR:
-				printf("XOR:ing %s and %s into %s\n", g.a.name.c_str(), g.b.name.c_str(), g.c.name.c_str());
+				printf("XOR\t%s\t%s\t%s\n", g.a.name.c_str(), g.b.name.c_str(), g.c.name.c_str());
 				g.c.state = g.a.state ^ g.b.state;
-				break;
+				goto next_iter;
 			}
 			none_updated = false;
 		}
