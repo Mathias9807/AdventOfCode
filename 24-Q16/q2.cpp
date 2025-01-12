@@ -194,7 +194,7 @@ void mark_path(node *n, char** path, char** passes) {
 }
 
 int main() {
-	FILE *f = fopen("test.txt", "r");
+	FILE *f = fopen("input-4.txt", "r");
 
 	// Read map
 	while (fgetc(f) != '\n') width++;
@@ -279,7 +279,7 @@ int main() {
 
 		print_map();
 		fflush(stdout);
-		usleep(1E5);
+		usleep(1E4);
 	}
 
 	printf("%ld paths\n", best_paths.size());
