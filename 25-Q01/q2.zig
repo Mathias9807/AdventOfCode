@@ -21,22 +21,19 @@ pub fn main() void {
 
         // Reset n to between 0-99 range
         n = @mod(n, 100);
-        std.debug.print("n: {}\n", .{n});
-        const prev_n = n; // 85
+        const prev_n = n;
         // Calc offset
-        var offset = @as(i32, val) * @as(i32, @intCast(sign)); // -425
-        std.debug.print("offset: {}\n", .{offset});
+        var offset = @as(i32, val) * @as(i32, @intCast(sign));
         // Tick for every loop (100)
-        const cycles = @divTrunc(offset, 100); // -4
+        const cycles = @divTrunc(offset, 100);
         pass += @abs(cycles);
         offset -= cycles * 100;
         // Change n
-        n += offset; // n = -340
+        n += offset;
         // Tick if landed on 0
         if (n == 0) pass += 1;
         // Tick if < 0 or > 99
         if ((prev_n != 0 and n < 0) or n > 99) pass += 1;
-        std.debug.print("ticks: {}\n", .{pass});
     }
 
     std.debug.print("Password: {}\n", .{pass});
